@@ -1,0 +1,4611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tech Ethics: Decision Courtroom</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --bg-color: #0d0e15;
+    --card-bg: #181a24;
+    --accent-color: #5ce1e6;
+    --text-color: #f8fafc;
+    --text-muted: #8a8fbf;
+    --success: #4ade80;
+    --danger: #f87171;
+    --warning: #facc15;
+    --border-color: #3b3e5b;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', monospace;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+.game-container {
+    background-color: var(--card-bg);
+
+    width: 100%;
+    max-width: 850px;
+
+    border-radius: 4px;
+
+    box-shadow:
+        0 0 20px rgba(92,225,230,0.2),
+        inset 0 0 10px rgba(0,0,0,0.8);
+
+    padding: 20px;
+
+    border: 4px solid var(--border-color);
+
+    position: relative;
+
+    margin: auto;
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+
+/* =========================
+   START SCREEN
+========================= */
+
+.start-screen {
+    text-align: center;
+    padding: 40px 10px;
+}
+
+.start-screen h1 {
+    color: var(--accent-color);
+
+    font-size: 1.2rem;
+
+    line-height: 1.8;
+
+    margin-bottom: 30px;
+
+    text-shadow: 3px 3px #000;
+}
+
+.name-input {
+    width: 100%;
+    max-width: 500px;
+
+    padding: 15px;
+
+    background: #08090d;
+
+    border: 2px solid var(--border-color);
+
+    color: white;
+
+    font-family: 'Press Start 2P', monospace;
+
+    font-size: 0.65rem;
+
+    margin-bottom: 20px;
+
+    outline: none;
+}
+
+.name-input:focus {
+    border-color: var(--accent-color);
+}
+
+
+/* =========================
+   GAME HEADER
+========================= */
+
+.game-header {
+
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 15px;
+
+    border-bottom: 2px dashed var(--border-color);
+
+    padding-bottom: 10px;
+
+    gap: 10px;
+}
+
+.category-badge {
+
+    color: var(--accent-color);
+
+    font-size: 0.6rem;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+}
+
+.node-counter {
+
+    font-size: 0.6rem;
+
+    color: var(--warning);
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   ROLE BOX
+========================= */
+
+.role-box {
+
+    background: #10121a;
+
+    border: 2px solid var(--accent-color);
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    font-size: 0.55rem;
+
+    line-height: 1.7;
+}
+
+.role-title {
+    color: var(--warning);
+    margin-bottom: 6px;
+}
+
+
+/* =========================
+   DIALOGUE
+========================= */
+
+.speaker-box {
+
+    color: var(--warning);
+
+    font-size: 0.75rem;
+
+    margin-bottom: 8px;
+
+    text-transform: uppercase;
+}
+
+.dialogue-box {
+
+    background-color: #08090d;
+
+    padding: 15px;
+
+    border-radius: 4px;
+
+    margin-bottom: 15px;
+
+    border: 2px solid var(--border-color);
+
+    line-height: 1.7;
+
+    min-height: 100px;
+
+    font-size: 0.7rem;
+
+    color: #fff;
+
+    word-break: break-word;
+}
+
+
+/* =========================
+   OPTIONS
+========================= */
+
+.options-container {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.btn {
+
+    background-color: #242738;
+
+    color: var(--text-color);
+
+    border: 2px solid var(--border-color);
+
+    padding: 12px;
+
+    font-size: 0.6rem;
+
+    cursor: pointer;
+
+    transition: all 0.1s ease;
+
+    text-align: left;
+
+    line-height: 1.5;
+
+    box-shadow: 3px 3px 0px #000;
+
+    width: 100%;
+
+    word-break: break-word;
+}
+
+.btn:hover:not(:disabled),
+.btn:active:not(:disabled) {
+
+    background-color: var(--accent-color);
+
+    color: #000;
+
+    border-color: #fff;
+}
+
+.btn:disabled {
+
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+.btn-start {
+
+    background-color: var(--accent-color);
+
+    color: #000;
+
+    font-size: 0.8rem;
+
+    padding: 16px 24px;
+
+    text-align: center;
+
+    display: inline-block;
+
+    box-shadow: 4px 4px 0px #000;
+
+    width: auto;
+
+    max-width: 100%;
+}
+
+.btn-start:hover,
+.btn-start:active {
+
+    background-color: #fff;
+
+    transform: scale(1.02);
+}
+
+
+/* =========================
+   OUTCOME
+========================= */
+
+.verdict-box {
+
+    text-align: center;
+
+    padding: 20px 10px;
+
+    border: 4px solid var(--border-color);
+
+    margin-bottom: 20px;
+
+    background-color: #08090d;
+}
+
+.player-result {
+
+    color: var(--accent-color);
+
+    font-size: 0.55rem;
+
+    margin-bottom: 15px;
+
+    line-height: 1.6;
+}
+
+.verdict-badge {
+
+    font-size: 0.9rem;
+
+    margin-bottom: 12px;
+
+    line-height: 1.5;
+
+    text-shadow: 2px 2px #000;
+
+    word-break: break-word;
+}
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 8px;
+
+    margin: 15px 0;
+
+    text-align: left;
+
+    font-size: 0.55rem;
+
+    background: #12141d;
+
+    padding: 12px;
+
+    border: 1px solid var(--border-color);
+}
+
+.stat-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    padding: 2px 0;
+}
+
+.stat-val {
+
+    color: var(--accent-color);
+}
+
+.archetype-title {
+
+    color: var(--warning);
+
+    font-size: 0.75rem;
+
+    margin-bottom: 10px;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+}
+
+.verdict-description {
+
+    font-size: 0.6rem;
+
+    line-height: 1.7;
+
+    margin-bottom: 15px;
+
+    color: #fff;
+
+    word-break: break-word;
+}
+
+.decision-count {
+
+    font-size: 0.5rem;
+
+    color: var(--text-muted);
+
+    margin-top: 10px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:600px) {
+
+    body {
+        padding: 5px;
+    }
+
+    .game-container {
+        padding: 12px;
+        border-width: 3px;
+    }
+
+    .start-screen {
+        padding: 25px 5px;
+    }
+
+    .start-screen h1 {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .speaker-box {
+        font-size: 0.7rem;
+    }
+
+    .dialogue-box {
+        padding: 12px;
+        font-size: 0.62rem;
+        min-height: 110px;
+        line-height: 1.6;
+    }
+
+    .btn {
+        padding: 10px;
+        font-size: 0.55rem;
+    }
+
+    .btn-start {
+        font-size: 0.7rem;
+        padding: 14px 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        font-size: 0.5rem;
+    }
+
+    .stat-item {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .verdict-badge {
+        font-size: 0.75rem;
+    }
+
+    .archetype-title {
+        font-size: 0.65rem;
+    }
+
+    .verdict-description {
+        font-size: 0.55rem;
+    }
+
+    .role-box {
+        font-size: 0.5rem;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<div class="game-container">
+
+
+<!-- =========================
+     START SCREEN
+========================= -->
+
+<div id="start-screen" class="screen active start-screen">
+
+    <h1>
+        TECH ETHICS:<br>
+        DECISION COURTROOM
+    </h1>
+
+    <input
+        id="player-name"
+        class="name-input"
+        type="text"
+        maxlength="30"
+        placeholder="ENTER YOUR NAME"
+    >
+
+    <br>
+
+    <button
+        class="btn btn-start"
+        onclick="startGame()"
+    >
+        START GAME
+    </button>
+
+</div>
+
+
+<!-- =========================
+     GAME SCREEN
+========================= -->
+
+<div id="game-screen" class="screen">
+
+    <div class="game-header">
+
+        <div id="category-badge"
+             class="category-badge">
+            Category
+        </div>
+
+        <div id="node-counter"
+             class="node-counter">
+            NODE 1 / 12
+        </div>
+
+    </div>
+
+
+    <div class="role-box">
+
+        <div class="role-title">
+            YOUR ROLE
+        </div>
+
+        <div id="role-description">
+            Role
+        </div>
+
+    </div>
+
+
+    <div id="speaker-box"
+         class="speaker-box">
+        Character
+    </div>
+
+
+    <div id="dialogue-box"
+         class="dialogue-box">
+    </div>
+
+
+    <div id="options-container"
+         class="options-container">
+    </div>
+
+</div>
+
+
+<!-- =========================
+     OUTCOME SCREEN
+========================= -->
+
+<div id="outcome-screen" class="screen">
+
+    <div id="verdict-box"
+         class="verdict-box">
+
+        <div id="player-result"
+             class="player-result">
+        </div>
+
+        <div id="verdict-badge"
+             class="verdict-badge">
+        </div>
+
+        <div id="archetype-title"
+             class="archetype-title">
+        </div>
+
+        <div id="verdict-description"
+             class="verdict-description">
+        </div>
+
+
+        <div class="stats-grid">
+
+            <div class="stat-item">
+                <span>ETHICS:</span>
+                <span id="score-ethics"
+                      class="stat-val">
+                </span>
+            </div>
+
+            <div class="stat-item">
+                <span>HONESTY:</span>
+                <span id="score-honesty"
+                      class="stat-val">
+                </span>
+            </div>
+
+            <div class="stat-item">
+                <span>RESPONSIBILITY:</span>
+                <span id="score-resp"
+                      class="stat-val">
+                </span>
+            </div>
+
+            <div class="stat-item">
+                <span>SELF-INTEREST:</span>
+                <span id="score-self"
+                      class="stat-val">
+                </span>
+            </div>
+
+        </div>
+
+        <div id="decision-count"
+             class="decision-count">
+        </div>
+
+    </div>
+
+
+    <button
+        class="btn btn-start"
+        style="display:block;margin:0 auto;"
+        onclick="startGame()">
+
+        PLAY NEXT SCENARIO
+
+    </button>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* ============================================================
+   GAME STATE
+============================================================ */
+
+let currentScenario = null;
+
+let currentNodeKey = "1";
+
+let typingTimer = null;
+
+let nodeHistoryCount = 1;
+
+let playerName = "";
+
+
+/* ============================================================
+   NEW SCORING SYSTEM
+============================================================ */
+
+let scores = {
+
+    ethics: 0,
+
+    honesty: 0,
+
+    responsibility: 0,
+
+    selfInterest: 0,
+
+    decisions: 0
+
+};
+
+
+/* ============================================================
+   DYNAMIC STATE
+============================================================ */
+
+let state = {};
+
+
+/* ============================================================
+   SCENARIOS
+============================================================ */
+
+const scenarios = [
+
+/* ============================================================
+   SCENARIO 1
+============================================================ */
+
+{
+    category: "Codes of Conduct",
+
+    title: "The Unattended Laptop",
+
+    role:
+        "You are Leo, a university student working late on a programming assignment. Your goal is to complete your own work while dealing with academic pressure.",
+
+    nodes: {
+
+        "1": {
+
+            speaker: "LEO",
+
+            text:
+                "It's almost midnight. My assignment keeps crashing. Alex left his laptop unlocked while he went to get a drink.",
+
+            options: [
+
+                {
+                    text: "Look at Alex's screen.",
+
+                    next: "2A",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -1,
+                    self: 1
+                },
+
+                {
+                    text: "Stay on your own computer.",
+
+                    next: "2B",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 1,
+                    self: 0
+                }
+
+            ]
+
+        },
+
+
+        "2A": {
+
+            speaker: "LEO",
+
+            text:
+                "His whole algorithm is right there. I could finally figure out what's wrong with mine.",
+
+            options: [
+
+                {
+                    text: "Read his code carefully.",
+
+                    next: "3A",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2
+                },
+
+                {
+                    text: "Close the laptop and walk away.",
+
+                    next: "3B",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                }
+
+            ]
+
+        },
+
+
+        "2B": {
+
+            speaker: "ALEX",
+
+            text:
+                "You're still here? You look like you're about to throw your laptop out the window.",
+
+            options: [
+
+                {
+                    text: "Ask him to explain the algorithm.",
+
+                    next: "3B",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 1,
+                    self: 0
+                },
+
+                {
+                    text: "Ask him to send you his finished assignment.",
+
+                    next: "3C",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: 0,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "3A": {
+
+            speaker: "LEO",
+
+            text:
+                "I recognise this function. If I take a picture, I could use it as a reference.",
+
+            options: [
+
+                {
+                    text: "Take a photo.",
+
+                    next: "4A",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -1,
+                    self: 2,
+
+                    setFlag: "tookPhoto"
+                },
+
+                {
+                    text: "Memorise nothing and close the laptop.",
+
+                    next: "4B",
+
+                    ethics: 1,
+                    honesty: 1,
+                    resp: 1,
+                    self: -1
+                }
+
+            ]
+
+        },
+
+
+        "3B": {
+
+            speaker: "ALEX",
+
+            text:
+                "Don't copy my code. I'll explain the idea instead. Think of the algorithm as a series of smaller decisions.",
+
+            options: [
+
+                {
+                    text: "Listen and write your own implementation.",
+
+                    next: "4C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Ask him to demonstrate using his actual code.",
+
+                    next: "4D",
+
+                    ethics: 1,
+                    honesty: 1,
+                    resp: 1,
+                    self: 0
+                }
+
+            ]
+
+        },
+
+
+        "3C": {
+
+            speaker: "ALEX",
+
+            text:
+                "I can't give you my assignment. That's against the course rules.",
+
+            options: [
+
+                {
+                    text: "Accept his explanation instead.",
+
+                    next: "4C",
+
+                    ethics: 1,
+                    honesty: 2,
+                    resp: 1,
+                    self: 0
+                },
+
+                {
+                    text: "Wait until he leaves and access his USB.",
+
+                    next: "4A",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2,
+
+                    setFlag: "stoleUSB"
+                }
+
+            ]
+
+        },
+
+
+        "4A": {
+
+            speaker: "LEO",
+
+            text:
+                "I have the code now. If I change the variable names, maybe the lecturer won't notice.",
+
+            options: [
+
+                {
+                    text: "Copy it and modify the names.",
+
+                    next: "5A",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                },
+
+                {
+                    text: "Delete the photo and start again.",
+
+                    next: "5B",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                }
+
+            ]
+
+        },
+
+
+        "4B": {
+
+            speaker: "LEO",
+
+            text:
+                "I remember part of what I saw, but I'm not sure if using that knowledge is still wrong.",
+
+            options: [
+
+                {
+                    text: "Search the official documentation instead.",
+
+                    next: "5B",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Recreate the exact solution from memory.",
+
+                    next: "5A",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "4C": {
+
+            speaker: "LEO",
+
+            text:
+                "Alex explained the concept. Now I understand why my loop wasn't working.",
+
+            options: [
+
+                {
+                    text: "Write your own solution.",
+
+                    next: "5C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Ask Alex to check your finished code.",
+
+                    next: "5C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                }
+
+            ]
+
+        },
+
+
+        "4D": {
+
+            speaker: "ALEX",
+
+            text:
+                "I'll show you one example, but don't submit anything directly from my assignment.",
+
+            options: [
+
+                {
+                    text: "Use the example only to understand the concept.",
+
+                    next: "5C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 1,
+                    self: 0
+                },
+
+                {
+                    text: "Copy the structure because he already showed it to me.",
+
+                    next: "5A",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "5A": {
+
+            speaker: "AUTOMATED GRADER",
+
+            text:
+                "WARNING. Your submission has a 93% structural similarity with another student's submission.",
+
+            options: [
+
+                {
+                    text: "Delete evidence and claim coincidence.",
+
+                    next: "6A",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                },
+
+                {
+                    text: "Admit that you used another student's work.",
+
+                    next: "6B",
+
+                    ethics: 1,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                }
+
+            ]
+
+        },
+
+
+        "5B": {
+
+            speaker: "LEO",
+
+            text:
+                "It's 11:45 PM. I still don't have a working solution.",
+
+            options: [
+
+                {
+                    text: "Submit incomplete work honestly.",
+
+                    next: "6C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Ask a friend for their completed assignment.",
+
+                    next: "6A",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "5C": {
+
+            speaker: "LEO",
+
+            text:
+                "The program finally works. But there's still 15 minutes before submission.",
+
+            options: [
+
+                {
+                    text: "Test everything before submitting.",
+
+                    next: "6C",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Submit immediately without checking.",
+
+                    next: "6D",
+
+                    ethics: 0,
+                    honesty: 0,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "6A": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "We found evidence that your submission was derived from another student's work.",
+
+            options: [
+
+                {
+                    text: "Continue denying everything.",
+
+                    next: "7A",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                },
+
+                {
+                    text: "Admit what happened.",
+
+                    next: "7B",
+
+                    ethics: 1,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                }
+
+            ]
+
+        },
+
+
+        "6B": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "You violated academic integrity, but admitting it voluntarily will be considered during the review.",
+
+            options: [
+
+                {
+                    text: "Accept the academic penalty.",
+
+                    next: "7C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Blame Alex for helping you.",
+
+                    next: "7A",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "6C": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "Your solution isn't perfect, but the work appears to be entirely your own.",
+
+            options: [
+
+                {
+                    text: "Accept the grade honestly.",
+
+                    next: "7C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 1,
+                    self: 0
+                },
+
+                {
+                    text: "Claim Alex helped more than he actually did to improve your grade.",
+
+                    next: "7A",
+
+                    ethics: -1,
+                    honesty: -2,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "6D": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "Your program crashes during marking. You have already submitted it.",
+
+            options: [
+
+                {
+                    text: "Tell the lecturer immediately.",
+
+                    next: "7C",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Quietly alter the submitted file.",
+
+                    next: "7A",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "7A": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "This incident will remain on your academic record as a formal disciplinary breach.",
+
+            options: [
+
+                {
+                    text: "Learn from the mistake and accept responsibility.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Say the university's rules are unfair.",
+
+                    next: "8",
+
+                    ethics: -1,
+                    honesty: 0,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "7B": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "Your confession helps. You will retake the assignment with a capped grade.",
+
+            options: [
+
+                {
+                    text: "Learn from the mistake and accept responsibility.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Say the university's rules are unfair.",
+
+                    next: "8",
+
+                    ethics: -1,
+                    honesty: 0,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "7C": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "Your file check is complete. Respecting academic boundaries protects your degree value.",
+
+            options: [
+
+                {
+                    text: "Learn from the experience and move forward.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Complain about how hard the course is.",
+
+                    next: "8",
+
+                    ethics: 0,
+                    honesty: 0,
+                    resp: 0,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "8": {
+
+            speaker: "ALEX",
+
+            getText: () => {
+
+                if (state.tookPhoto || state.stoleUSB) {
+
+                    return "You know, I noticed my laptop files were accessed while I grabbed a drink. That was really uncool.";
+
+                }
+
+                return "You know, I was pretty uncomfortable when you were looking towards my laptop earlier.";
+
+            },
+
+            options: [
+
+                {
+                    text: "Apologise sincerely.",
+
+                    next: "9",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Tell him he shouldn't have left it unlocked.",
+
+                    next: "9",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "9": {
+
+            speaker: "FRIEND",
+
+            text:
+                "Forget all this drama. Everyone copies sometimes. Next assignment, I'll send you mine.",
+
+            options: [
+
+                {
+                    text: "Refuse and suggest studying together.",
+
+                    next: "10",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Agree to exchange assignments.",
+
+                    next: "10",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "10": {
+
+            speaker: "PROFESSOR",
+
+            text:
+                "You now have another difficult assignment. How will you approach it?",
+
+            options: [
+
+                {
+                    text: "Work independently and seek legitimate guidance.",
+
+                    next: "END",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Use another student's work as a shortcut.",
+
+                    next: "END",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        }
+
+    }
+
+},
+
+
+/* ============================================================
+   SCENARIO 2
+============================================================ */
+
+{
+    category: "Software Piracy",
+
+    title: "The $25,000 License",
+
+    role:
+        "You are the company's IT Specialist. Management expects you to find a way to provide five designers with the required software without exceeding the project budget.",
+
+    nodes: {
+
+        "1": {
+
+            speaker: "CEO",
+
+            text:
+                "We won a huge CAD contract. Five designers need the software, but the licenses cost $25,000.",
+
+            options: [
+
+                {
+                    text: "Find a cracked version.",
+
+                    next: "2",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2,
+
+                    setFlag: "choseCrack"
+                },
+
+                {
+                    text: "Investigate cheaper legal alternatives.",
+
+                    next: "4",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                }
+
+            ]
+
+        },
+
+
+        "2": {
+
+            speaker: "IT SPECIALIST",
+
+            text:
+                "I found a crack. Defender says it's malware.",
+
+            options: [
+
+                {
+                    text: "Disable Defender.",
+
+                    next: "3",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2,
+
+                    setFlag: "ranMalware"
+                },
+
+                {
+                    text: "Don't run it.",
+
+                    next: "4",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                }
+
+            ]
+
+        },
+
+
+        "3": {
+
+            speaker: "CEO",
+
+            text:
+                "We don't have time for ethics lectures. We need the software tonight.",
+
+            options: [
+
+                {
+                    text: "Install the crack anyway.",
+
+                    next: "6",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                },
+
+                {
+                    text: "Explain the cybersecurity risk.",
+
+                    next: "4",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                }
+
+            ]
+
+        },
+
+
+        "4": {
+
+            speaker: "DESIGNER",
+
+            text:
+                "The open-source alternative can handle most of the project.",
+
+            options: [
+
+                {
+                    text: "Adapt the workflow.",
+
+                    next: "5",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Use the legal trial version while secretly keeping the crack.",
+
+                    next: "6",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "5": {
+
+            speaker: "CEO",
+
+            text:
+                "What if we buy one license and share the login?",
+
+            options: [
+
+                {
+                    text: "Explain why this violates the license.",
+
+                    next: "6",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Share the account.",
+
+                    next: "6",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2,
+
+                    setFlag: "sharedAccount"
+                }
+
+            ]
+
+        },
+
+
+        "6": {
+
+            speaker: "VENDOR",
+
+            text:
+                "Our systems detected unusual simultaneous access.",
+
+            options: [
+
+                {
+                    text: "Stop the unauthorised use.",
+
+                    next: "7",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Create additional accounts to disguise it.",
+
+                    next: "7",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "7": {
+
+            speaker: "IT SPECIALIST",
+
+            getText: () => {
+
+                if (state.ranMalware) {
+
+                    return "ALERT: Encrypted payloads executing on local drives! Ransomware vector traced to the disabled Defender crack.";
+
+                }
+
+                return "Something is wrong. The file server is behaving strangely.";
+
+            },
+
+            options: [
+
+                {
+                    text: "Disconnect the affected machines and report it.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Hide the problem until the client deadline.",
+
+                    next: "8",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "8": {
+
+            speaker: "CEO",
+
+            text:
+                "ALL COMPANY FILES HAVE BEEN ENCRYPTED. Nobody can know we caused this.",
+
+            options: [
+
+                {
+                    text: "Inform management and cybersecurity immediately.",
+
+                    next: "9",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Hide the incident.",
+
+                    next: "9",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "9": {
+
+            speaker: "CLIENT",
+
+            text:
+                "Why are our project files delayed?",
+
+            options: [
+
+                {
+                    text: "Explain the security incident honestly.",
+
+                    next: "10",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Blame the client.",
+
+                    next: "10",
+
+                    ethics: -1,
+                    honesty: -2,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "10": {
+
+            speaker: "VENDOR",
+
+            text:
+                "We can help you resolve the licensing violation if you cooperate.",
+
+            options: [
+
+                {
+                    text: "Cooperate and regularise the licenses.",
+
+                    next: "11",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Delete evidence.",
+
+                    next: "11",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "11": {
+
+            speaker: "CEO",
+
+            text:
+                "The legal alternative costs money, but it protects us long-term.",
+
+            options: [
+
+                {
+                    text: "Recommend legal licensing.",
+
+                    next: "12",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Recommend continuing piracy because it saves money.",
+
+                    next: "12",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "12": {
+
+            speaker: "JUNIOR DEVELOPER",
+
+            text:
+                "Should I download cracked software to save the company money?",
+
+            options: [
+
+                {
+                    text: "Explain the risks and recommend legitimate alternatives.",
+
+                    next: "END",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Teach them how to bypass the license.",
+
+                    next: "END",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        }
+
+    }
+
+},
+
+
+/* ============================================================
+   SCENARIO 3
+============================================================ */
+
+{
+    category: "Information Privacy",
+
+    title: "The Secret Location Database",
+
+    role:
+        "You are a Privacy and Compliance Analyst at a mobile game company. You have discovered that the company is collecting location information without clear user consent.",
+
+    nodes: {
+
+        "1": {
+
+            speaker: "SENIOR DEVELOPER",
+
+            text:
+                "I've added background GPS tracking to our offline puzzle game.",
+
+            options: [
+
+                {
+                    text: "Ask why location is necessary.",
+
+                    next: "2",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Ignore it.",
+
+                    next: "2",
+
+                    ethics: -1,
+                    honesty: 0,
+                    resp: -2,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "2": {
+
+            speaker: "SENIOR DEVELOPER",
+
+            text:
+                "Location data is extremely valuable. Advertisers will pay for it.",
+
+            options: [
+
+                {
+                    text: "Ask whether users consented.",
+
+                    next: "3",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Ask how much money you'll personally receive.",
+
+                    next: "3",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "3": {
+
+            speaker: "PRIVACY OFFICER",
+
+            text:
+                "The current app doesn't clearly ask users for location permission.",
+
+            options: [
+
+                {
+                    text: "Stop the feature until consent is implemented.",
+
+                    next: "4",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1,
+
+                    setFlag: "reportedEarly"
+                },
+
+                {
+                    text: "Hide the permission inside the terms and conditions.",
+
+                    next: "4",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "4": {
+
+            speaker: "CEO",
+
+            text:
+                "Users don't read terms anyway. Everyone does this.",
+
+            options: [
+
+                {
+                    text: "Explain that consent must be meaningful.",
+
+                    next: "5",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Agree with the CEO.",
+
+                    next: "5",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "5": {
+
+            speaker: "MARKETING LEAD",
+
+            text:
+                "We've collected 500,000 location histories.",
+
+            options: [
+
+                {
+                    text: "Request deletion of improperly collected data.",
+
+                    next: "6",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Process it for advertising.",
+
+                    next: "6",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "6": {
+
+            speaker: "SENIOR DEVELOPER",
+
+            text:
+                "If you help me prepare the dataset, I'll give you 5% of the revenue.",
+
+            options: [
+
+                {
+                    text: "Refuse.",
+
+                    next: "7",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Accept.",
+
+                    next: "7",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "7": {
+
+            speaker: "SENIOR DEVELOPER",
+
+            text:
+                "Let's copy everything to this personal USB so nobody sees it.",
+
+            options: [
+
+                {
+                    text: "Refuse and report the request.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Copy the database.",
+
+                    next: "8",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2,
+
+                    setFlag: "copiedUSB"
+                }
+
+            ]
+
+        },
+
+
+        "8": {
+
+            speaker: "SENIOR DEVELOPER",
+
+            text:
+                "If you report me, I'll tell management you leaked confidential information.",
+
+            options: [
+
+                {
+                    text: "Document the conversation and report it.",
+
+                    next: "9",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Back down.",
+
+                    next: "9",
+
+                    ethics: -1,
+                    honesty: 0,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "9": {
+
+            speaker: "JOURNALIST",
+
+            text:
+                "We have evidence that your company secretly collected user locations.",
+
+            options: [
+
+                {
+                    text: "Tell the truth.",
+
+                    next: "10",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 1,
+                    self: -1
+                },
+
+                {
+                    text: "Deny everything.",
+
+                    next: "10",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "10": {
+
+            speaker: "REGULATOR",
+
+            getText: () => {
+
+                if (state.reportedEarly) {
+
+                    return "Compliance Officer notes you raised early red flags. Now: who authorized final collection?";
+
+                }
+
+                return "You were part of the pipeline processing this data. Why didn't you stop it?";
+
+            },
+
+            options: [
+
+                {
+                    text: "Provide accurate records.",
+
+                    next: "11",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Delete internal records first.",
+
+                    next: "11",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "11": {
+
+            speaker: "USER REPRESENTATIVE",
+
+            text:
+                "Our children were using this game. We had no idea their locations were being collected.",
+
+            options: [
+
+                {
+                    text: "Apologise and support remediation.",
+
+                    next: "12",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Say users should have read the terms.",
+
+                    next: "12",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "12": {
+
+            speaker: "CEO",
+
+            text:
+                "We can restart the feature with proper consent. It will make less money.",
+
+            options: [
+
+                {
+                    text: "Support privacy-compliant tracking.",
+
+                    next: "END",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Recommend secretly collecting the data again.",
+
+                    next: "END",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        }
+
+    }
+
+},
+
+
+/* ============================================================
+   SCENARIO 4
+============================================================ */
+
+{
+    category: "Intellectual Property",
+
+    title: "The AI Art Portfolio",
+
+    role:
+        "You are a Creative Technology Designer responsible for producing a major advertising campaign while ensuring that AI-generated and third-party material is used responsibly.",
+
+    nodes: {
+
+        "1": {
+
+            speaker: "ART DIRECTOR",
+
+            text:
+                "We need ten posters in 24 hours.",
+
+            options: [
+
+                {
+                    text: "Use AI only for brainstorming.",
+
+                    next: "2",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Generate everything and submit it directly.",
+
+                    next: "2",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "2": {
+
+            speaker: "DESIGNER",
+
+            text:
+                "This image looks almost identical to an artist's portfolio.",
+
+            options: [
+
+                {
+                    text: "Reject the image.",
+
+                    next: "3",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Use it because nobody will notice.",
+
+                    next: "3",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "3": {
+
+            speaker: "DESIGNER",
+
+            text:
+                "The artist's signature is visible.",
+
+            options: [
+
+                {
+                    text: "Don't use the image.",
+
+                    next: "4",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Crop the signature out.",
+
+                    next: "4",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2,
+
+                    setFlag: "croppedSignature"
+                }
+
+            ]
+
+        },
+
+
+        "4": {
+
+            speaker: "CLIENT",
+
+            text:
+                "We don't care how you make it. Just deliver.",
+
+            options: [
+
+                {
+                    text: "Explain the IP risk.",
+
+                    next: "5",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 1,
+                    self: 0
+                },
+
+                {
+                    text: "Do whatever is necessary.",
+
+                    next: "5",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "5": {
+
+            speaker: "CLIENT",
+
+            text:
+                "Here's our competitor's logo. Trace it and change a few things.",
+
+            options: [
+
+                {
+                    text: "Refuse.",
+
+                    next: "6",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Trace it.",
+
+                    next: "6",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "6": {
+
+            speaker: "CLIENT",
+
+            text:
+                "Did you use AI to make these?",
+
+            options: [
+
+                {
+                    text: "Be transparent about AI assistance.",
+
+                    next: "7",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 1,
+                    self: 0
+                },
+
+                {
+                    text: "Claim everything was manually created.",
+
+                    next: "7",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "7": {
+
+            speaker: "ARTIST",
+
+            getText: () => {
+
+                if (state.croppedSignature) {
+
+                    return "I saw my artwork on your ad. You cropped my signature off! My attorney has issued a legal suit.";
+
+                }
+
+                return "Your poster looks extremely similar to my published work.";
+
+            },
+
+            options: [
+
+                {
+                    text: "Investigate and pause publication.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Ignore the complaint.",
+
+                    next: "8",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "8": {
+
+            speaker: "LAWYER",
+
+            text:
+                "We may have an IP problem.",
+
+            options: [
+
+                {
+                    text: "Cooperate and replace questionable assets.",
+
+                    next: "9",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Tell the lawyer to make the complaint disappear.",
+
+                    next: "9",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "9": {
+
+            speaker: "MARKETING MANAGER",
+
+            text:
+                "The campaign launches tomorrow.",
+
+            options: [
+
+                {
+                    text: "Delay the campaign to replace disputed material.",
+
+                    next: "10",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Publish anyway.",
+
+                    next: "10",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "10": {
+
+            speaker: "DESIGNER",
+
+            text:
+                "I can redraw the entire poster tonight.",
+
+            options: [
+
+                {
+                    text: "Give them the time to create original work.",
+
+                    next: "11",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Keep the copied material.",
+
+                    next: "11",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "11": {
+
+            speaker: "CLIENT",
+
+            text:
+                "The original version actually looks better.",
+
+            options: [
+
+                {
+                    text: "Explain why originality matters.",
+
+                    next: "12",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 1,
+                    self: 0
+                },
+
+                {
+                    text: "Keep the copied version for future campaigns.",
+
+                    next: "12",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "12": {
+
+            speaker: "JUNIOR DESIGNER",
+
+            text:
+                "Can I put this project in my portfolio?",
+
+            options: [
+
+                {
+                    text: "Document which assets were original and properly licensed.",
+
+                    next: "END",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Present AI/copied assets as entirely your own work.",
+
+                    next: "END",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        }
+
+    }
+
+},
+
+
+/* ============================================================
+   SCENARIO 5
+============================================================ */
+
+{
+    category: "Green Computing",
+
+    title: "The E-Waste Liquidation",
+
+    role:
+        "You are an IT Asset Manager responsible for disposing of 300 old company computers while protecting company data and reducing environmental harm.",
+
+    nodes: {
+
+        "1": {
+
+            speaker: "OFFICE MANAGER",
+
+            text:
+                "We replaced 300 PCs. The boss wants all of them gone today.",
+
+            options: [
+
+                {
+                    text: "Suggest recycling or donation.",
+
+                    next: "2",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Throw them into the garbage skip.",
+
+                    next: "2",
+
+                    ethics: -2,
+                    honesty: 0,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "2": {
+
+            speaker: "MANAGER",
+
+            text:
+                "Recycling costs money.",
+
+            options: [
+
+                {
+                    text: "Explain the environmental responsibility.",
+
+                    next: "3",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Find the cheapest disposal method regardless of legality.",
+
+                    next: "3",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "3": {
+
+            speaker: "CHARITY DIRECTOR",
+
+            text:
+                "Can these computers still be used?",
+
+            options: [
+
+                {
+                    text: "Test and refurbish them.",
+
+                    next: "4",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Say they're worthless.",
+
+                    next: "4",
+
+                    ethics: -1,
+                    honesty: -2,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "4": {
+
+            speaker: "IT SPECIALIST",
+
+            text:
+                "Some computers still contain employee files.",
+
+            options: [
+
+                {
+                    text: "Securely wipe the drives.",
+
+                    next: "5",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Donate them without checking.",
+
+                    next: "5",
+
+                    ethics: -2,
+                    honesty: 0,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "5": {
+
+            speaker: "MANAGER",
+
+            text:
+                "We don't have time to wipe 300 drives.",
+
+            options: [
+
+                {
+                    text: "Request additional time/resources.",
+
+                    next: "6",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Send them out anyway.",
+
+                    next: "6",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "6": {
+
+            speaker: "HAULER",
+
+            text:
+                "I'll take everything tonight. No paperwork required.",
+
+            options: [
+
+                {
+                    text: "Refuse.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Accept the offer.",
+
+                    next: "7",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2,
+
+                    setFlag: "hiredHauler"
+                }
+
+            ]
+
+        },
+
+
+        "7": {
+
+            speaker: "HAULER",
+
+            text:
+                "Nobody will ever know where these machines came from.",
+
+            options: [
+
+                {
+                    text: "Stop the disposal and retrieve the equipment.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Tell him to continue.",
+
+                    next: "8",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "8": {
+
+            speaker: "INSPECTOR",
+
+            getText: () => {
+
+                if (state.hiredHauler) {
+
+                    return "CRIMINAL INVESTIGATION: Hazardous electronics linked to your serial numbers were dumped in a local forest.";
+
+                }
+
+                return "We are inspecting disposal practices. Commercial facilities must declare electronic waste channels.";
+
+            },
+
+            options: [
+
+                {
+                    text: "Cooperate with the investigation.",
+
+                    next: "9",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Hide the company records.",
+
+                    next: "9",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "9": {
+
+            speaker: "COMMUNITY LEADER",
+
+            text:
+                "Local schools need computers.",
+
+            options: [
+
+                {
+                    text: "Donate usable machines.",
+
+                    next: "10",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Sell everything for scrap.",
+
+                    next: "10",
+
+                    ethics: -1,
+                    honesty: 0,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "10": {
+
+            speaker: "CEO",
+
+            text:
+                "Responsible disposal costs more than dumping.",
+
+            options: [
+
+                {
+                    text: "Explain the long-term environmental cost.",
+
+                    next: "11",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Agree that saving money matters more.",
+
+                    next: "11",
+
+                    ethics: -1,
+                    honesty: 0,
+                    resp: -1,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "11": {
+
+            speaker: "EMPLOYEE",
+
+            text:
+                "What should our company do next time?",
+
+            options: [
+
+                {
+                    text: "Create a formal e-waste policy.",
+
+                    next: "12",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Deal with it case-by-case.",
+
+                    next: "12",
+
+                    ethics: 0,
+                    honesty: 0,
+                    resp: 0,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "12": {
+
+            speaker: "CEO",
+
+            text:
+                "Should we budget for sustainable hardware disposal?",
+
+            options: [
+
+                {
+                    text: "Yes, make it part of company policy.",
+
+                    next: "END",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "No, only worry about it when regulators are watching.",
+
+                    next: "END",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        }
+
+    }
+
+},
+
+
+/* ============================================================
+   SCENARIO 6
+============================================================ */
+
+{
+    category: "Information Accuracy",
+
+    title: "The Viral Bridge Collapse",
+
+    role:
+        "You are a Junior Journalist at a digital news organisation. Your responsibility is to report breaking events quickly without spreading misinformation.",
+
+    nodes: {
+
+        "1": {
+
+            speaker: "JUNIOR JOURNALIST",
+
+            text:
+                "Someone sent us a photo of a major bridge collapsing.",
+
+            options: [
+
+                {
+                    text: "Verify it first.",
+
+                    next: "2",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1,
+
+                    setFlag: "verifiedFirst"
+                },
+
+                {
+                    text: "Publish immediately.",
+
+                    next: "2",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2,
+
+                    setFlag: "publishedEarly"
+                }
+
+            ]
+
+        },
+
+
+        "2": {
+
+            speaker: "RIVAL JOURNALIST",
+
+            text:
+                "We've already published it!",
+
+            options: [
+
+                {
+                    text: "Continue fact-checking.",
+
+                    next: "3",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Publish it too so we don't lose traffic.",
+
+                    next: "3",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "3": {
+
+            speaker: "SOCIAL MEDIA MANAGER",
+
+            text:
+                "The post is trending.",
+
+            options: [
+
+                {
+                    text: "Don't promote it until verified.",
+
+                    next: "4",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Boost it while it's trending.",
+
+                    next: "4",
+
+                    ethics: -2,
+                    honesty: -1,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "4": {
+
+            speaker: "EMERGENCY OFFICER",
+
+            text:
+                "We have no reports of a bridge collapse.",
+
+            options: [
+
+                {
+                    text: "Hold publication.",
+
+                    next: "5",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Publish with 'unconfirmed' in the headline.",
+
+                    next: "5",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "5": {
+
+            speaker: "JUNIOR JOURNALIST",
+
+            text:
+                "Another account uploaded a video showing the same bridge.",
+
+            options: [
+
+                {
+                    text: "Verify the video independently.",
+
+                    next: "6",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Treat the second source as confirmation.",
+
+                    next: "6",
+
+                    ethics: -1,
+                    honesty: -1,
+                    resp: -1,
+                    self: 1
+                }
+
+            ]
+
+        },
+
+
+        "6": {
+
+            speaker: "FACT CHECKER",
+
+            text:
+                "The image and video are AI-generated.",
+
+            options: [
+
+                {
+                    text: "Publish an investigation explaining the fake.",
+
+                    next: "7",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Publish the original anyway because it's already viral.",
+
+                    next: "7",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "7": {
+
+            speaker: "EDITOR",
+
+            text:
+                "We already spent money promoting the story.",
+
+            options: [
+
+                {
+                    text: "Stop the promotion.",
+
+                    next: "8",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Keep promoting it until someone proves us wrong.",
+
+                    next: "8",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "8": {
+
+            speaker: "EMERGENCY SERVICES",
+
+            getText: () => {
+
+                if (state.publishedEarly) {
+
+                    return "Panic is widespread! Traffic jams caused by your early breaking report are blocking actual ambulances!";
+
+                }
+
+                return "People are avoiding the area. Traffic congestion is causing emergency response delays.";
+
+            },
+
+            options: [
+
+                {
+                    text: "Immediately issue a correction.",
+
+                    next: "9",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Quietly edit the article without mentioning the mistake.",
+
+                    next: "9",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "9": {
+
+            speaker: "EDITOR",
+
+            text:
+                "The public wants to know who approved the story.",
+
+            options: [
+
+                {
+                    text: "Accept responsibility as a newsroom.",
+
+                    next: "10",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Blame the junior journalist.",
+
+                    next: "10",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "10": {
+
+            speaker: "PRESS ETHICS BOARD",
+
+            text:
+                "How will you correct the misinformation?",
+
+            options: [
+
+                {
+                    text: "Issue a prominent correction and apology.",
+
+                    next: "11",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Put the correction somewhere nobody will notice.",
+
+                    next: "11",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        },
+
+
+        "11": {
+
+            speaker: "EDITOR",
+
+            text:
+                "This cannot happen again.",
+
+            options: [
+
+                {
+                    text: "Introduce mandatory verification for viral media.",
+
+                    next: "12",
+
+                    ethics: 2,
+                    honesty: 1,
+                    resp: 2,
+                    self: 0
+                },
+
+                {
+                    text: "Tell journalists to simply be more careful.",
+
+                    next: "12",
+
+                    ethics: 1,
+                    honesty: 0,
+                    resp: 1,
+                    self: 0
+                }
+
+            ]
+
+        },
+
+
+        "12": {
+
+            speaker: "JUNIOR JOURNALIST",
+
+            text:
+                "Another anonymous account just sent us a shocking image. It could be the biggest story of the year.",
+
+            options: [
+
+                {
+                    text: "Verify before publishing.",
+
+                    next: "END",
+
+                    ethics: 2,
+                    honesty: 2,
+                    resp: 2,
+                    self: -1
+                },
+
+                {
+                    text: "Publish first and verify later.",
+
+                    next: "END",
+
+                    ethics: -2,
+                    honesty: -2,
+                    resp: -2,
+                    self: 2
+                }
+
+            ]
+
+        }
+
+    }
+
+}
+
+];
+
+
+/* ============================================================
+   RESET SCORES
+============================================================ */
+
+function resetScores() {
+
+    scores = {
+
+        ethics: 0,
+
+        honesty: 0,
+
+        responsibility: 0,
+
+        selfInterest: 0,
+
+        decisions: 0
+
+    };
+
+    state = {};
+
+    nodeHistoryCount = 1;
+
+}
+
+
+/* ============================================================
+   START GAME
+============================================================ */
+
+function startGame() {
+
+    const nameInput =
+        document.getElementById("player-name");
+
+    if (!playerName) {
+
+        playerName =
+            nameInput.value.trim();
+
+        if (!playerName) {
+
+            nameInput.style.borderColor =
+                "var(--danger)";
+
+            nameInput.placeholder =
+                "PLEASE ENTER YOUR NAME";
+
+            return;
+        }
+
+    }
+
+
+    resetScores();
+
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            scenarios.length
+        );
+
+
+    currentScenario =
+        scenarios[randomIndex];
+
+
+    currentNodeKey = "1";
+
+
+    document.getElementById(
+        "category-badge"
+    ).innerText =
+        currentScenario.category +
+        ": " +
+        currentScenario.title;
+
+
+    document.getElementById(
+        "role-description"
+    ).innerText =
+        currentScenario.role;
+
+
+    showScreen("game-screen");
+
+    renderNode();
+
+}
+
+
+/* ============================================================
+   RENDER NODE
+============================================================ */
+
+function renderNode() {
+
+    const node =
+        currentScenario.nodes[currentNodeKey];
+
+
+    document.getElementById(
+        "node-counter"
+    ).innerText =
+        `NODE ${nodeHistoryCount} / 12`;
+
+
+    document.getElementById(
+        "speaker-box"
+    ).innerText =
+        node.speaker;
+
+
+    const dialogueBox =
+        document.getElementById(
+            "dialogue-box"
+        );
+
+
+    const optionsContainer =
+        document.getElementById(
+            "options-container"
+        );
+
+
+    optionsContainer.innerHTML = "";
+
+    dialogueBox.innerText = "";
+
+
+    const textToDisplay =
+        node.getText
+            ? node.getText()
+            : node.text;
+
+
+    const words =
+        textToDisplay.split(" ");
+
+
+    let wordIndex = 0;
+
+
+    if (typingTimer)
+        clearInterval(typingTimer);
+
+
+    typingTimer =
+        setInterval(() => {
+
+            if (
+                wordIndex <
+                words.length
+            ) {
+
+                dialogueBox.innerText +=
+                    (
+                        wordIndex === 0
+                            ? ""
+                            : " "
+                    ) +
+                    words[wordIndex];
+
+                wordIndex++;
+
+            }
+
+            else {
+
+                clearInterval(
+                    typingTimer
+                );
+
+                renderOptions(
+                    node.options
+                );
+
+            }
+
+        }, 35);
+
+}
+
+
+/* ============================================================
+   RENDER OPTIONS
+============================================================ */
+
+function renderOptions(options) {
+
+    const optionsContainer =
+        document.getElementById(
+            "options-container"
+        );
+
+
+    optionsContainer.innerHTML = "";
+
+
+    options.forEach(option => {
+
+        const btn =
+            document.createElement(
+                "button"
+            );
+
+
+        btn.className = "btn";
+
+
+        btn.innerText =
+            "> " + option.text;
+
+
+        btn.onclick = () => {
+
+            applyMetrics(option);
+
+
+            if (option.setFlag) {
+
+                state[
+                    option.setFlag
+                ] = true;
+
+            }
+
+
+            if (
+                option.next === "END"
+            ) {
+
+                renderOutcome();
+
+            }
+
+            else {
+
+                currentNodeKey =
+                    option.next;
+
+                nodeHistoryCount++;
+
+                renderNode();
+
+            }
+
+        };
+
+
+        optionsContainer.appendChild(
+            btn
+        );
+
+    });
+
+}
+
+
+/* ============================================================
+   APPLY METRICS
+============================================================ */
+
+function applyMetrics(option) {
+
+    scores.ethics +=
+        option.ethics || 0;
+
+
+    scores.honesty +=
+        option.honesty || 0;
+
+
+    scores.responsibility +=
+        option.resp || 0;
+
+
+    scores.selfInterest +=
+        option.self || 0;
+
+
+    scores.decisions++;
+
+}
+
+
+/* ============================================================
+   SCORE CONVERSION
+============================================================ */
+
+function scoreToPercentage(score) {
+
+    if (
+        scores.decisions === 0
+    ) {
+
+        return 50;
+
+    }
+
+
+    const average =
+        score /
+        scores.decisions;
+
+
+    /*
+        -2 = 0%
+         0 = 50%
+        +2 = 100%
+    */
+
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            Math.round(
+                ((average + 2) / 4) * 100
+            )
+        )
+    );
+
+}
+
+
+/* ============================================================
+   OUTCOME
+============================================================ */
+
+function renderOutcome() {
+
+    showScreen(
+        "outcome-screen"
+    );
+
+
+    const ethicsPct =
+        scoreToPercentage(
+            scores.ethics
+        );
+
+
+    const honestyPct =
+        scoreToPercentage(
+            scores.honesty
+        );
+
+
+    const respPct =
+        scoreToPercentage(
+            scores.responsibility
+        );
+
+
+    const selfPct =
+        scoreToPercentage(
+            scores.selfInterest
+        );
+
+
+    /*
+       Overall ethical score.
+
+       Ethics = 40%
+       Honesty = 25%
+       Responsibility = 25%
+       Self-interest = 10%
+
+       Self-interest is inverted because
+       high self-interest generally indicates
+       prioritising personal gain.
+    */
+
+    const overallScore =
+        Math.round(
+
+            (ethicsPct * 0.40) +
+
+            (honestyPct * 0.25) +
+
+            (respPct * 0.25) +
+
+            ((100 - selfPct) * 0.10)
+
+        );
+
+
+    /* ========================================================
+       BADGE
+    ======================================================== */
+
+    let badge;
+
+
+    if (overallScore >= 90) {
+
+        badge =
+            `🏆 ETHICAL EXEMPLAR (${overallScore}%)`;
+
+    }
+
+    else if (overallScore >= 75) {
+
+        badge =
+            `🛡️ RESPONSIBLE PROFESSIONAL (${overallScore}%)`;
+
+    }
+
+    else if (overallScore >= 60) {
+
+        badge =
+            `⚖️ ETHICALLY MINDED (${overallScore}%)`;
+
+    }
+
+    else if (overallScore >= 40) {
+
+        badge =
+            `⚠️ QUESTIONABLE JUDGEMENT (${overallScore}%)`;
+
+    }
+
+    else if (overallScore >= 20) {
+
+        badge =
+            `🔴 ETHICAL RISK (${overallScore}%)`;
+
+    }
+
+    else {
+
+        badge =
+            `☠️ ETHICAL DISASTER (${overallScore}%)`;
+
+    }
+
+
+    /* ========================================================
+       ARCHETYPE SYSTEM
+    ======================================================== */
+
+    const archetypes = [
+
+        {
+
+            name:
+                "THE PRINCIPLED PROFESSIONAL",
+
+            score:
+
+                (ethicsPct * 0.45) +
+
+                (honestyPct * 0.30) +
+
+                (respPct * 0.25),
+
+            description:
+                "You consistently prioritised ethical standards, honesty and professional responsibility even when doing so created inconvenience or personal cost."
+
+        },
+
+
+        {
+
+            name:
+                "THE ETHICAL LEADER",
+
+            score:
+
+                (ethicsPct * 0.35) +
+
+                (honestyPct * 0.20) +
+
+                (respPct * 0.45),
+
+            description:
+                "You actively attempted to protect others, intervene in risky situations and encourage responsible decisions rather than simply protecting yourself."
+
+        },
+
+
+        {
+
+            name:
+                "THE HONEST COMPROMISER",
+
+            score:
+
+                (honestyPct * 0.55) +
+
+                (ethicsPct * 0.25) +
+
+                (respPct * 0.20),
+
+            description:
+                "You generally value honesty and are willing to admit mistakes, but you sometimes compromise ethical standards when pressure or convenience increases."
+
+        },
+
+
+        {
+
+            name:
+                "THE RESPONSIBLE BYSTANDER",
+
+            score:
+
+                (respPct * 0.55) +
+
+                (ethicsPct * 0.20) +
+
+                (honestyPct * 0.25),
+
+            description:
+                "You usually avoid directly participating in unethical behaviour, but you sometimes hesitate to actively intervene when others make questionable decisions."
+
+        },
+
+
+        {
+
+            name:
+                "THE PRAGMATIC NAVIGATOR",
+
+            score:
+
+                (
+                    (100 -
+                        Math.abs(
+                            ethicsPct - 50
+                        )
+                    ) +
+
+                    (100 -
+                        Math.abs(
+                            honestyPct - 50
+                        )
+                    ) +
+
+                    (100 -
+                        Math.abs(
+                            respPct - 50
+                        )
+                    )
+
+                ) / 3,
+
+            description:
+                "You tend to balance competing interests rather than consistently following one ethical principle. Your decisions change depending on the circumstances."
+
+        },
+
+
+        {
+
+            name:
+                "THE OPPORTUNIST",
+
+            score:
+
+                (selfPct * 0.55) +
+
+                ((100 -
+                    ethicsPct
+                ) * 0.30) +
+
+                ((100 -
+                    respPct
+                ) * 0.15),
+
+            description:
+                "You frequently prioritised convenience, personal benefit, financial gain or short-term success over ethical and professional considerations."
+
+        },
+
+
+        {
+
+            name:
+                "THE RULE BREAKER",
+
+            score:
+
+                ((100 -
+                    ethicsPct
+                ) * 0.45) +
+
+                ((100 -
+                    honestyPct
+                ) * 0.25) +
+
+                (selfPct * 0.30),
+
+            description:
+                "You repeatedly accepted ethical violations when they provided an advantage, particularly when you believed the consequences could be avoided."
+
+        }
+
+    ];
+
+
+    /*
+       Sort highest behavioural match first.
+    */
+
+    archetypes.sort(
+        (a,b) =>
+            b.score - a.score
+    );
+
+
+    const archetype =
+        archetypes[0];
+
+
+    /* ========================================================
+       DISPLAY
+    ======================================================== */
+
+    document.getElementById(
+        "player-result"
+    ).innerText =
+        `${playerName.toUpperCase()} — ${currentScenario.title}`;
+
+
+    document.getElementById(
+        "verdict-badge"
+    ).innerText =
+        badge;
+
+
+    document.getElementById(
+        "archetype-title"
+    ).innerText =
+        "ARCHETYPE: " +
+        archetype.name;
+
+
+    document.getElementById(
+        "verdict-description"
+    ).innerText =
+        archetype.description;
+
+
+    document.getElementById(
+        "score-ethics"
+    ).innerText =
+        ethicsPct + "%";
+
+
+    document.getElementById(
+        "score-honesty"
+    ).innerText =
+        honestyPct + "%";
+
+
+    document.getElementById(
+        "score-resp"
+    ).innerText =
+        respPct + "%";
+
+
+    document.getElementById(
+        "score-self"
+    ).innerText =
+        selfPct + "%";
+
+
+    document.getElementById(
+        "decision-count"
+    ).innerText =
+        `DECISIONS MADE: ${scores.decisions}`;
+
+}
+
+
+/* ============================================================
+   SCREEN SWITCH
+============================================================ */
+
+function showScreen(screenId) {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+
+            screen.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(screenId)
+        .classList.add("active");
+
+}
+
+</script>
+
+</body>
+</html>
